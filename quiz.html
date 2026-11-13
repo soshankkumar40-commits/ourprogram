@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Quiz App</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: lightblue;
+            text-align: center;
+        }
+
+        .quiz-box {
+            background: white;
+            width: 350px;
+            margin: 80px auto;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: darkblue;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+
+    <h2>My Quiz App</h2>
+
+    <h3 id="question">Question</h3>
+
+    <div id="options"></div>
+
+    <h3 id="result"></h3>
+
+    <button onclick="nextQuestion()">Next</button>
+
+</div>
+
+<script>
+
+let questions = [
+    {
+        question: "HTML stands for?",
+        options: [
+            "Hyper Text Markup Language",
+            "High Text Machine Language",
+            "Hyper Tool Multi Language",
+            "Home Text Markup Language"
+        ],
+        answer: 0
+    },
+
+    {
+        question: "Which language is used for styling?",
+        options: ["Java", "CSS", "C++", "Python"],
+        answer: 1
+    },
+
+    {
+        question: "Which language makes a webpage interactive?",
+        options: ["HTML", "CSS", "JavaScript", "C"],
+        answer: 2
+    },
+
+    {
+        question: "Which tag is used for a paragraph?",
+        options: ["<h1>", "<p>", "<br>", "<div>"],
+        answer: 1
+    },
+
+    {
+        question: "Which tag is used to create a link?",
+        options: ["<img>", "<a>", "<p>", "<table>"],
+        answer: 1
+    }
+];
+
+let index = 0;
+let score = 0;
+let selected = -1;
+
+function loadQuestion() {
+
+    selected = -1;
+
+    document.getElementById("question").innerHTML =
+        questions[index].question;
+
+    let output = "";
+
+    questions[index].options.forEach((option, i) => {
+        output += `<button onclick="checkAnswer(${i})">${option}</button>`;
+    });
+
+    document.getElementById("options").innerHTML = output;
+    document.getElementById("result").innerHTML = "";
+}
+
+function checkAnswer(i) {
+
+    if (selected !== -1) return;
+
+    selected = i;
+
+    if (i === questions[index].answer) {
+        score++;
+        document.getElementById("result").innerHTML = "Correct Answer!";
+    } else {
+        document.getElementById("result").innerHTML = "Wrong Answer!";
+    }
+}
+
+function nextQuestion() {
+
+    if (selected === -1) {
+        alert("Please select an answer!");
+        return;
+    }
+
+    index++;
+
+    if (index < questions.length) {
+        loadQuestion();
+    } else {
+        document.querySelector(".quiz-box").innerHTML =
+            "<h2>Quiz Completed!</h2>" +
+            "<h3>Your Score: " + score + "/" + questions.length + "</h3>" +
+            "<button onclick='location.reload()'>Restart Quiz</button>";
+    }
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
